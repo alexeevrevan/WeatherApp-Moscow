@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import Weather from "./components/Weather";
 import VariableInput from "./components/VariableInput";
-import { WeatherVariable } from "./components/Weather";
+import { WeatherVariable } from "./hooks/useWeather";
 
 const availableWeatherVariables: WeatherVariable[] = [
   "rain_sum",

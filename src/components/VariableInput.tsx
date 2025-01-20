@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import React, { useRef } from "react";
-import { WeatherVariable } from "./Weather";
+import { WeatherVariable } from "../hooks/useWeather";
 
 interface VariableInputProps {
   onAddVariable: (variable: WeatherVariable) => void;
