@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
 
-import React, { useRef } from "react";
+import React, { useRef, useCallback } from "react";
 import { WeatherVariable } from "../types";
+import { Input } from "../ui/Input/Input";
+import { Button } from "../ui/Button/Button";
+import { ErrorMessage } from "../ui/ErrorMessage/ErrorMessage";
 
 interface VariableInputProps {
   onAddVariable: (variable: WeatherVariable) => void;
@@ -15,7 +18,7 @@ const VariableInput: React.FC<VariableInputProps> = React.memo(
 
     const inputRef = useRef<HTMLInputElement>(null); //Состояние ререндеры вызывает, а инпут хранить как-то надо
 
-    const handleAddVariable = () => {
+    const handleAddVariable = useCallback(() => {
       const inputValue = inputRef.current?.value;
 
       if (inputValue && onInputValidation(inputValue)) {
@@ -26,15 +29,15 @@ const VariableInput: React.FC<VariableInputProps> = React.memo(
           inputRef.current.value = "";
         }
       }
-    };
+    }, [onAddVariable, onInputValidation]);
 
     return (
       <div className="input_field">
         <label>
-          <input type="text" ref={inputRef} />
+          <Input ref={inputRef} />
         </label>
-        <button onClick={handleAddVariable}>Добавить параметр</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <Button onClick={handleAddVariable}>Добавить параметр</Button>
+        {error && <ErrorMessage message={error} />}
       </div>
     );
   }
