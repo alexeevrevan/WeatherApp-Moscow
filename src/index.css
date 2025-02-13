@@ -15,3 +15,13 @@ code {
 table {
   width: 100%;
 }
+
+.main_wrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+.input_field{
+  display: inline;
+  margin: 0 auto;
+}
