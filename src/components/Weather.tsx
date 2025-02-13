@@ -2,6 +2,9 @@ import React from "react";
 import useWeather from "../hooks/useWeather";
 import { WeatherVariable } from "../types";
 import { v4 as uuidv4 } from "uuid";
+import { Table } from "../ui/Table/Table";
+import { Loading } from "../ui/Loading/Loading";
+import { ErrorMessage } from "../ui/ErrorMessage/ErrorMessage";
 
 type Latitude = number;
 type Longitude = number;
@@ -19,51 +22,36 @@ const Weather: React.FC<Props> = (props) => {
     props.variables
   );
 
+  if (loading) return <Loading />;
+  if (error) return <ErrorMessage message={error} />;
+
+  const headers = ['Date', ...props.variables];
+
   return (
-    <>
-      {loading && <p>Загрузка...</p>}
-      {error && <p>Ошибка: {error}</p>}
-      {weather && (
-        <table>
-          <thead>
-            <tr>
-              <td>Date</td>
-              {props.variables.map((variable) => (
-                <td key={variable}>{variable}</td>
-              ))}
+    weather && (
+      <Table headers={headers}>
+        {weather.daily.time.map((time, index) => {
+          const rowId = uuidv4();
+
+          return (
+            <tr key={rowId}>
+              <td>{time}</td>
+              {props.variables.map((variable) => {
+                const cellId = uuidv4();
+
+                return (
+                  <td key={cellId}>
+                    {weather.daily[variable]?.[index] !== undefined
+                      ? weather.daily[variable][index]
+                      : "Нет данных"}
+                  </td>
+                );
+              })}
             </tr>
-          </thead>
-          <tbody>
-            {weather.daily.time.map((time, index) => {
-              // Генерация уникального UUID для каждой строки
-              const rowId = uuidv4();
-
-              // Логирование UUID каждой строки
-              console.log(`Row ${index} UUID:`, rowId);
-
-              return (
-                <tr key={rowId}>
-                  <td>{time}</td>
-                  {props.variables.map((variable) => {
-                    // Генерация UUID для каждой ячейки
-                    const cellId = uuidv4();
-
-
-                    return (
-                      <td key={cellId}>
-                        {weather.daily[variable]?.[index] !== undefined
-                          ? weather.daily[variable][index]
-                          : "Нет данных"}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      )}
-    </>
+          );
+        })}
+      </Table>
+    )
   );
 };
 

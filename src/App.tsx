@@ -24,7 +24,8 @@ function App() {
         setError("Эта переменная уже добавлена.");
       }
     },
-    [variables]
+    
+    [variables, setError]
   );
 
   const handleAddVariable = useCallback(
