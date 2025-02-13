@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 
 import React, { useRef } from "react";
-import { WeatherVariable } from "../hooks/useWeather";
+import { WeatherVariable } from "../types";
 
 interface VariableInputProps {
   onAddVariable: (variable: WeatherVariable) => void;
-  error: string;
+  error: string | null;
   onInputValidation: (input: string) => boolean;
 }
 

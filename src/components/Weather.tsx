@@ -1,5 +1,6 @@
 import React from "react";
-import useWeather, { WeatherVariable } from "../hooks/useWeather";
+import useWeather from "../hooks/useWeather";
+import { WeatherVariable } from "../types";
 import { v4 as uuidv4 } from "uuid";
 
 type Latitude = number;

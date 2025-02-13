@@ -1,66 +1,46 @@
 import React, { useState, useCallback } from "react";
 import Weather from "./components/Weather";
 import VariableInput from "./components/VariableInput";
-import { WeatherVariable } from "./hooks/useWeather";
-
-const availableWeatherVariables: WeatherVariable[] = [
-  "rain_sum",
-  "snowfall_sum",
-  "weathercode",
-  "temperature_2m_max",
-  "temperature_2m_min",
-  "apparent_temperature_max",
-  "apparent_temperature_min",
-  "sunrise",
-  "sunset",
-  "precipitation_sum",
-  "showers_sum",
-  "precipitation_hours",
-  "windspeed_10m_max",
-  "windgusts_10m_max",
-  "winddirection_10m_dominant",
-  "shortwave_radiation_sum",
-  "et0_fao_evapotranspiration",
-];
+import { WeatherVariable } from "./types";
+import { useVariableValidation } from "./hooks/useVariableValidation";
 
 function App() {
+  // Локальное состояние для хранения переменных инпута
   const [variables, setVariables] = useState<WeatherVariable[]>([
     "rain_sum",
     "snowfall_sum",
   ]);
 
-  const [error, setError] = useState<string>(""); // Обрабатываем ошибки
+  // Запускаем кастомный хук для проверки введенных значений
+  const { validateInput, error, setError } = useVariableValidation();
 
   const addVariable = useCallback(
     (newVariable: WeatherVariable) => {
       if (!variables.includes(newVariable)) {
         setVariables((prev) => [...prev, newVariable]);
-        setError("");
+        setError(null);
       } else {
+        // Можно оставить локальную логику специфичную для этого случая
         setError("Эта переменная уже добавлена.");
       }
     },
     [variables]
   );
 
-  const validateInput = useCallback((input: string) => {
-    if (input.trim() === "") {
-      // Проверка на пустую строку
-      setError("Необходимо ввести значение"); // Устанавливаем сообщение об ошибке
-      return false;
-    }
-    // Входит ли в список допустимых
-    if (!availableWeatherVariables.includes(input as WeatherVariable)) {
-      setError("Недопустимая переменная.");
-      return false;
-    }
-    return true;
-  }, []);
+  const handleAddVariable = useCallback(
+    (input: string) => {
+      // Используем валидацию из хука
+      if (validateInput(input)) {
+        addVariable(input as WeatherVariable);
+      }
+    },
+    [validateInput, addVariable]
+  );
 
   return (
     <div>
       <VariableInput
-        onAddVariable={addVariable}
+        onAddVariable={handleAddVariable}
         error={error}
         onInputValidation={validateInput}
       />

@@ -1,38 +1,6 @@
 import { useEffect, useState } from "react";
+import { WeatherApiResponse, WeatherVariable } from "../types";
 
-export type WeatherVariable =
-  | "time"
-  | "weathercode"
-  | "temperature_2m_max"
-  | "temperature_2m_min"
-  | "apparent_temperature_max"
-  | "apparent_temperature_min"
-  | "sunrise"
-  | "sunset"
-  | "precipitation_sum"
-  | "rain_sum"
-  | "showers_sum"
-  | "snowfall_sum"
-  | "precipitation_hours"
-  | "windspeed_10m_max"
-  | "windgusts_10m_max"
-  | "winddirection_10m_dominant"
-  | "shortwave_radiation_sum"
-  | "et0_fao_evapotranspiration";
-
-type DailyWeather = Record<WeatherVariable, number[] | string[]>;
-
-export type WeatherApiResponse = {
-  latitude: number;
-  longitude: number;
-  generationtime_ms: number;
-  utc_offset_seconds: number;
-  timezone: string;
-  timezone_abbreviation: string;
-  elevation: number;
-  daily_units: string[];
-  daily: DailyWeather;
-};
 
 const useWeather = (
   latitude: number,
