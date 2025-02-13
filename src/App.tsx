@@ -38,7 +38,7 @@ function App() {
   );
 
   return (
-    <div>
+    <div className="main_wrapper">
       <VariableInput
         onAddVariable={handleAddVariable}
         error={error}
@@ -49,6 +49,7 @@ function App() {
         longitude={37.618423}
         variables={variables}
       />
+      
     </div>
   );
 }

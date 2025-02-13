@@ -29,7 +29,7 @@ const VariableInput: React.FC<VariableInputProps> = React.memo(
     };
 
     return (
-      <div>
+      <div className="input_field">
         <label>
           <input type="text" ref={inputRef} />
         </label>
